@@ -1,0 +1,163 @@
+/* Tailwind v4 WITHOUT preflight, so it does not reset the existing museum CSS. */
+@import "tailwindcss/theme.css";
+@import "tailwindcss/utilities.css";
+
+/* =====================================================================
+   Timeline / monument viewer theme.
+   Everything below follows the site theme (document.documentElement.dataset.theme = dark | light).
+   Colours derive from the site tokens (--ink, --panel, --ivory, --gold ...) set in index.css; the few
+   viewer-specific values are defined for both themes here. Variables live on :root because drei's <Html>
+   markers render outside .kd-root.
+   ===================================================================== */
+:root {
+  --kd-font-display: 'Cinzel', 'Kaal Display', 'Cinzel Decorative', 'Cormorant Garamond', Georgia, serif;
+  --kd-font-body: 'Manrope', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --kd-bg: #0a080d;
+  --kd-panel: rgba(13, 10, 8, .78);
+  --kd-panel-soft: rgba(13, 10, 8, .5);
+  --kd-scrim: rgba(6, 5, 8, .92);
+  --kd-soft: rgba(236, 227, 210, .07);
+  --kd-track: rgba(236, 227, 210, .18);
+  --kd-line: rgba(201, 168, 106, .2);
+  --kd-line-2: rgba(201, 168, 106, .34);
+  --kd-line-3: rgba(236, 227, 210, .55);
+  --kd-hover: rgba(201, 168, 106, .16);
+  --kd-hover-line: rgba(236, 227, 210, .5);
+  --kd-text: #f3ead8;
+  --kd-text-2: #e0d6c3;
+  --kd-text-3: #bdb2a0;
+  --kd-text-4: #948a7b;
+  --kd-gold: #e6c68a;
+  --kd-gold-2: #c9a86a;
+  --kd-accent: #c9a86a;
+  --kd-accent-soft: rgba(201, 168, 106, .14);
+  --kd-accent-line: rgba(201, 168, 106, .7);
+  --kd-on-accent: #17110a;
+  --kd-glow: rgba(230, 198, 138, .55);
+  --kd-chip: rgba(8, 6, 10, .74);
+  --kd-chip-text: #f3ead8;
+  --kd-motif-opacity: .11;
+  --kd-motif-filter: none;
+  --kd-motif-blend: screen;
+}
+:root[data-theme="light"] {
+  --kd-bg: #cfc9bc;
+  --kd-panel: rgba(255, 253, 248, .84);
+  --kd-panel-soft: rgba(255, 253, 248, .6);
+  --kd-scrim: rgba(244, 240, 231, .94);
+  --kd-soft: rgba(48, 41, 31, .06);
+  --kd-track: rgba(48, 41, 31, .16);
+  --kd-line: rgba(139, 107, 60, .24);
+  --kd-line-2: rgba(139, 107, 60, .4);
+  --kd-line-3: rgba(48, 41, 31, .5);
+  --kd-hover: rgba(139, 107, 60, .14);
+  --kd-hover-line: rgba(48, 41, 31, .5);
+  --kd-text: #2a2318;
+  --kd-text-2: #3d3425;
+  --kd-text-3: #5f5444;
+  --kd-text-4: #7a6e5d;
+  --kd-gold: #7a5a28;
+  --kd-gold-2: #80602f;
+  --kd-accent: #8b6b3c;
+  --kd-accent-soft: rgba(139, 107, 60, .14);
+  --kd-accent-line: rgba(139, 107, 60, .75);
+  --kd-on-accent: #fffdf8;
+  --kd-glow: rgba(139, 107, 60, .35);
+  --kd-chip: rgba(24, 18, 10, .74);
+  --kd-chip-text: #fffdf8;
+  --kd-motif-opacity: .2;
+  --kd-motif-filter: brightness(.55) saturate(1.2);
+  --kd-motif-blend: multiply;
+}
+
+/* The site's global "button,a,input { font: inherit }" is unlayered, so it would beat Tailwind's
+   (layered) text-size utilities. Revert it inside the viewer so text-xs, text-sm ... apply as designed. */
+.kd-root :is(button, a, input) { font: revert-layer; font-family: var(--kd-font-body); }
+.kd-root { font-family: var(--kd-font-body); font-weight: 400; color: var(--kd-text); }
+.kd-root button { cursor: pointer; }
+.kd-root ::selection { background: var(--kd-accent); color: var(--kd-on-accent); }
+
+/* Typography: Cinzel for year labels, event titles and drawer headings; Manrope for reading text */
+.kd-display { font-family: var(--kd-font-display); font-weight: 600; letter-spacing: .04em; }
+.kd-year { font-family: var(--kd-font-display); font-weight: 700; letter-spacing: .06em; font-variant-numeric: lining-nums tabular-nums; }
+.kd-body { font-family: var(--kd-font-body); font-weight: 400; }
+
+/* Semantic colour classes used by the viewer components (unlayered, so they beat Tailwind utilities) */
+.kd-bg { background-color: var(--kd-bg); }
+.kd-scrim { background-color: var(--kd-scrim); }
+.kd-panel { background-color: var(--kd-panel); }
+.kd-panel-soft { background-color: var(--kd-panel-soft); }
+.kd-soft { background-color: var(--kd-soft); }
+.kd-track { background-color: var(--kd-track); }
+.kd-hover:hover { background-color: var(--kd-hover); }
+.kd-hover-text:hover { color: var(--kd-text); }
+.kd-hover-line:hover { border-color: var(--kd-hover-line); }
+.kd-hover-gold-line:hover { border-color: var(--kd-gold); }
+.group:hover .kd-ghover-gold-line { border-color: var(--kd-gold); }
+.kd-accent-bg { background-color: var(--kd-accent); color: var(--kd-on-accent); }
+.kd-accent-soft { background-color: var(--kd-accent-soft); }
+.kd-accent-hover:hover { background-color: var(--kd-accent); color: var(--kd-on-accent); }
+.kd-gold-bg { background-color: var(--kd-gold); }
+.kd-line { border-color: var(--kd-line); }
+.kd-line-2 { border-color: var(--kd-line-2); }
+.kd-line-3 { border-color: var(--kd-line-3); }
+.kd-accent-line { border-color: var(--kd-accent-line); }
+.kd-accent-line-soft { border-color: var(--kd-line-2); }
+.kd-gold-line { border-color: var(--kd-gold); }
+.kd-text { color: var(--kd-text); }
+.kd-text-2 { color: var(--kd-text-2); }
+.kd-text-3 { color: var(--kd-text-3); }
+.kd-text-4 { color: var(--kd-text-4); }
+.kd-gold { color: var(--kd-gold); }
+.kd-gold-2 { color: var(--kd-gold-2); }
+.kd-focus-ring:focus-visible { outline: 2px solid var(--kd-gold); outline-offset: 2px; }
+.kd-progress { background: linear-gradient(90deg, color-mix(in srgb, var(--kd-accent) 55%, transparent), var(--kd-gold)); box-shadow: 0 0 14px var(--kd-glow); }
+.kd-thumb { border-color: var(--kd-bg); background-color: var(--kd-gold); box-shadow: 0 0 16px var(--kd-glow), 0 0 0 2px var(--kd-gold); }
+.kd-spinner { border-color: var(--kd-line); border-top-color: var(--kd-accent); }
+.kd-photo-ph { background: linear-gradient(135deg, color-mix(in srgb, var(--kd-accent) 26%, var(--kd-bg)), var(--kd-bg)); }
+/* Chips that sit on top of photographs keep a dark glass look in both themes */
+.kd-photo-chip { background-color: var(--kd-chip); color: var(--kd-chip-text); border-color: rgba(255, 255, 255, .25); }
+.kd-photo-chip:hover { background-color: rgba(0, 0, 0, .9); }
+
+/* Translucent heritage backdrop: jaali lattice, a slowly turning mandala and two chakras.
+   Sits above the 3D canvas, below the panels, never intercepts input. */
+.kd-backdrop { position: absolute; inset: 0; z-index: 5; overflow: hidden; pointer-events: none; opacity: var(--kd-motif-opacity); filter: var(--kd-motif-filter); mix-blend-mode: var(--kd-motif-blend); }
+.kd-backdrop-jaali { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .55; -webkit-mask-image: radial-gradient(ellipse at 50% 55%, transparent 28%, #000 85%); mask-image: radial-gradient(ellipse at 50% 55%, transparent 28%, #000 85%); }
+.kd-backdrop-mandala { position: absolute; left: 50%; top: 46%; width: min(120vmin, 1100px); aspect-ratio: 1; translate: -50% -50%; }
+.kd-backdrop-chakra { position: absolute; width: min(26vmin, 240px); aspect-ratio: 1; }
+.kd-backdrop-chakra-a { left: 3vmin; bottom: 22vmin; opacity: .7; }
+.kd-backdrop-chakra-b { right: 3vmin; top: 20vmin; opacity: .5; }
+@media (prefers-reduced-motion: reduce) { .kd-backdrop .mr-outer, .kd-backdrop .mr-inner { animation: none; } }
+@media (max-width: 767px) { .kd-backdrop-chakra { display: none; } }
+
+
+
+/* Pulsing 3D annotation markers */
+.kd-poi { position: relative; display: grid; place-items: center; width: 34px; height: 34px; border: 0; background: none; padding: 0; color: #1a1305; }
+.kd-poi-dot { position: relative; z-index: 2; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: #f0c878; border: 2px solid #fff3d6; font-size: 12px; font-weight: 700; box-shadow: 0 0 16px rgba(240,200,120,.85); transition: transform .2s; }
+.kd-poi-ring { position: absolute; inset: 0; border-radius: 50%; border: 2px solid #f0c878; animation: kd-pulse 2s ease-out infinite; }
+.kd-poi:hover .kd-poi-dot, .kd-poi.is-active .kd-poi-dot { transform: scale(1.18); background: #fff3d6; }
+.kd-poi-label { position: absolute; left: 40px; top: 50%; transform: translateY(-50%); white-space: nowrap; padding: 4px 10px; border-radius: 8px; border: 1px solid var(--kd-line-2); background: var(--kd-panel); backdrop-filter: blur(6px); color: var(--kd-text); font-family: var(--kd-font-display); letter-spacing: .06em; font-size: 11px; opacity: 0; pointer-events: none; transition: opacity .2s; }
+.kd-poi:hover .kd-poi-label, .kd-poi.is-active .kd-poi-label { opacity: 1; }
+@keyframes kd-pulse { 0% { transform: scale(.7); opacity: .9; } 100% { transform: scale(1.9); opacity: 0; } }
+
+.kd-slide-in { animation: kd-slide .35s cubic-bezier(.2,.8,.2,1); }
+@keyframes kd-slide { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: none; } }
+@media (max-width: 767px) { .kd-slide-in { animation-name: kd-rise; } }
+@keyframes kd-rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+
+/* Larger hit area, keyboard focus and reduced motion for markers */
+.kd-poi { width: 44px; height: 44px; }
+.kd-poi-label { left: 50px; font-size: 12px; }
+.kd-poi:focus-visible { outline: 2px solid #fff3d6; outline-offset: 4px; border-radius: 50%; }
+.kd-poi:focus-visible .kd-poi-label { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .kd-poi-ring, .kd-slide-in { animation: none !important; } }
+
+/* Very short windows (landscape phones, small panels): drop the status line to save height */
+@media (max-height: 520px) { .kd-status { display: none; } }
+
+/* B6: soft fade used for text that changes (phase titles, event notes) */
+.kd-fade { animation: kd-fade .35s ease both; }
+@keyframes kd-fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .kd-fade { animation: none !important; } }
